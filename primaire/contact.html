@@ -9,7 +9,11 @@
 <link rel="stylesheet" type="text/css" href="styles/bootstrap4/bootstrap.min.css">
 <link href="plugins/fontawesome-free-5.0.1/css/fontawesome-all.css" rel="stylesheet" type="text/css">
 <link rel="stylesheet" type="text/css" href="styles/contact_styles.css">
-<link rel="stylesheet" type="text/css" href="styles/contact_responsive.css">
+<link rel="stylesheet" type="text/css" href="styles/contact_responsive.css"> 
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"/>
+<!-- Style pour Leaflet Draw -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css" />
+
 </head>
 <body>
 
@@ -22,7 +26,7 @@
 			<!-- Logo -->
 			<div class="logo_container">
 				<div class="logo">
-					<img src="images/logo.png" alt="">
+					<img src="images/Sauterelle logo.png" alt="">
 					<span>LES SAUTERELLES</span>
 				</div>
 			</div>
@@ -33,7 +37,8 @@
 					<ul class="main_nav_list">
 						<li class="main_nav_item"><a href="index.html">home</a></li>
 						<li class="main_nav_item"><a href="#">about us</a></li>
-						<li class="main_nav_item"><a href="LES SAUTERELLESs.html">courses</a></li>
+						<li class="main_nav_item"><a href="courses.html">courses</a></li>
+						<li class="main_nav_item"><a href="admision.html">admision</a></li>
 						<li class="main_nav_item"><a href="elements.html">elements</a></li>
 						<li class="main_nav_item"><a href="news.html">news</a></li>
 						<li class="main_nav_item"><a href="#">contact</a></li>
@@ -164,7 +169,10 @@
 				<div class="col">
 					<div id="google_map">
 						<div class="map_container">
-							<div id="map"></div>
+							 <!-- Conteneur principal du dashboard -->
+							<div id="dashboard-container">
+								
+							</div>
 						</div>
 					</div>
 				</div>
@@ -215,7 +223,7 @@
 						<!-- Logo -->
 						<div class="logo_container">
 							<div class="logo">
-								<img src="images/logo.png" alt="">
+								<img src="images/Sauterelle logo.png"  alt="">
 								<span>LES SAUTERELLES</span>
 							</div>
 						</div>
@@ -307,7 +315,34 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 	</footer>
 
 </div>
+<!-- Inclusion du fichier JS contenant la classe AdvancedDashboard -->
+<script src="js/class.js"></script>
+ <!-- Chargement des bibliothèques nécessaires -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Pour les graphiques -->
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script> <!-- Leaflet pour les cartes -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script> <!-- Extension Leaflet Draw -->
+    
+<script>
+	// Initialisation de l'instance du Dashboard Avancé
+	const dashboard = new AdvancedDashboard('dashboard-container');
 
+	// Exemple de données pour les utilisateurs
+	const userLocations = [
+		{ latitude: 40.7128, longitude: -74.0060, name: "John Doe", age: 28, occupation: "Developer", id: "1" },
+		{ latitude: 34.0522, longitude: -118.2437, name: "Jane Smith", age: 34, occupation: "Designer", id: "2" },
+		{ latitude: 51.5074, longitude: -0.1278, name: "Albert", age: 45, occupation: "Manager", id: "3" },
+		{ latitude: 48.8566, longitude: 2.3522, name: "Pierre Dupont", age: 29, occupation: "Architect", id: "4" }
+	];
+
+	// Liste des propriétés à afficher dans les infobulles des marqueurs
+	const propertyKeys = ["name", "age", "occupation", "id"];
+
+	// Ajouter une carte centrée sur Londres
+	dashboard.addMap('Carte 1: Londres', [51.5074, -0.1278]);
+
+	// Ajouter des marqueurs sur la carte de Londres avec les données utilisateur
+	dashboard.mapManager.addUserMarkers("map-0", userLocations, propertyKeys);
+	</script>
 <script src="js/jquery-3.2.1.min.js"></script>
 <script src="styles/bootstrap4/popper.js"></script>
 <script src="styles/bootstrap4/bootstrap.min.js"></script>
