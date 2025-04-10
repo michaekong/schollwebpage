@@ -436,6 +436,62 @@ layer.bindTooltip(tooltipContent, { permanent: false });
     initMap();
 }
 
+traceRoute(destinationLat, destinationLng) {
+    const getExternalLocation = async () => {
+        const url = 'http://ip-api.com/json/'; // API endpoint pour obtenir la localisation
+
+        try {
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error('Erreur lors de la récupération des coordonnées.');
+            }
+
+            const data = await response.json();
+            if (data.status === 'fail') {
+                throw new Error(data.message);
+            }
+
+            return { lat: data.lat, lng: data.lon };
+            
+        } catch (error) {
+            console.error("Erreur:", error);
+            alert("Impossible de récupérer votre position externe. Vérifiez la console pour plus de détails.");
+            return null;
+        }
+    };
+
+    getExternalLocation().then(position => {
+        if (position) {
+            const userLat = position.lat;
+            const userLng = position.lng;
+
+            const mapId = `map-${this.maps.size - 1}`;
+            const mapInfo = this.maps.get(mapId);
+
+            if (!mapInfo) {
+                alert("Aucune carte trouvée.");
+                return;
+            }
+
+            const { instance: map } = mapInfo;
+
+            if (this.routingControl) {
+                map.removeControl(this.routingControl);
+            }
+
+            this.routingControl = L.Routing.control({
+                waypoints: [
+                    L.latLng(userLat, userLng),
+                    L.latLng(destinationLat, destinationLng)
+                ],
+                routeWhileDragging: true
+            }).addTo(map);
+
+            L.marker([userLat, userLng]).addTo(map).bindPopup('Vous êtes ici').openPopup();
+            L.marker([destinationLat, destinationLng]).addTo(map).bindPopup('Destination').openPopup();
+        }
+    });
+}
     _// Fonction pour obtenir tous les marqueurs à l'intérieur d'un polygone
 _getMarkersInsidePolygon(polygon) {
     let markersInside = []; // Liste pour stocker les marqueurs situés à l'intérieur du polygone

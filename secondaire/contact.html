@@ -11,6 +11,9 @@
 <link rel="stylesheet" type="text/css" href="styles/contact_styles.css">
 <link rel="stylesheet" type="text/css" href="styles/contact_responsive.css"> 
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"/>
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.css" />
+    
 <!-- Style pour Leaflet Draw -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css" />
 </head>
@@ -118,11 +121,11 @@
 						<div class="contact_title">Get in touch</div>
 
 						<div class="contact_form_container">
-							<form action="post">
-								<input id="contact_form_name" class="input_field contact_form_name" type="text" placeholder="Name" required="required" data-error="Name is required.">
-								<input id="contact_form_email" class="input_field contact_form_email" type="email" placeholder="E-mail" required="required" data-error="Valid email is required.">
-								<textarea id="contact_form_message" class="text_field contact_form_message" name="message" placeholder="Message" required="required" data-error="Please, write us a message."></textarea>
-								<button id="contact_send_btn" type="button" class="contact_send_btn trans_200" value="Submit">send message</button>
+							<form action="send_email.php" method="POST">
+								<input id="contact_form_name" class="input_field contact_form_name" name="name" type="text" placeholder="Name" required="required">
+								<input id="contact_form_email" class="input_field contact_form_email" name="email" type="email" placeholder="E-mail" required="required">
+								<textarea id="contact_form_message" class="text_field contact_form_message" name="message" placeholder="Message" required="required"></textarea>
+								<button id="contact_send_btn" type="submit" class="contact_send_btn trans_200">Send Message</button>
 							</form>
 						</div>
 					</div>
@@ -166,8 +169,10 @@
 			<!-- Google Map -->
 
 			<div class="row">
-				<div class="col">
+				<div class="col"><div class="contact_title">Get in touch</div>
 					<div id="google_map">
+						<div class="contact_title">"la piété"    map</div>
+
 						<div class="map_container">
 							 <!-- Conteneur principal du dashboard -->
 							<div id="dashboard-container">
@@ -318,31 +323,30 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 </div>
 <!-- Inclusion du fichier JS contenant la classe AdvancedDashboard -->
 <script src="js/class.js"></script>
- <!-- Chargement des bibliothèques nécessaires -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Pour les graphiques -->
-    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script> <!-- Leaflet pour les cartes -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script> <!-- Extension Leaflet Draw -->
-    
+ !-- Extension Leaflet Draw -->
+	<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
 <script>
 	// Initialisation de l'instance du Dashboard Avancé
 	const dashboard = new AdvancedDashboard('dashboard-container');
 
-	// Exemple de données pour les utilisateurs
-	const userLocations = [
-		{ latitude: 40.7128, longitude: -74.0060, name: "John Doe", age: 28, occupation: "Developer", id: "1" },
-		{ latitude: 34.0522, longitude: -118.2437, name: "Jane Smith", age: 34, occupation: "Designer", id: "2" },
-		{ latitude: 51.5074, longitude: -0.1278, name: "Albert", age: 45, occupation: "Manager", id: "3" },
-		{ latitude: 48.8566, longitude: 2.3522, name: "Pierre Dupont", age: 29, occupation: "Architect", id: "4" }
-	];
+	
 
 	// Liste des propriétés à afficher dans les infobulles des marqueurs
 	const propertyKeys = ["name", "age", "occupation", "id"];
 
 	// Ajouter une carte centrée sur Londres
-	dashboard.addMap('Carte 1: Londres', [51.5074, -0.1278]);
+	dashboard.addMap("", [3.8232067755165406, 11.534475781203742]);
 
 	// Ajouter des marqueurs sur la carte de Londres avec les données utilisateur
-	dashboard.mapManager.addUserMarkers("map-0", userLocations, propertyKeys);
+	
+	const destinationLat = 3.8232067755165406; // Remplacez par votre latitude de destination
+const destinationLng = 11.534475781203742; // Remplacez par votre longitude de destination
+
+// Tracer un itinéraire vers la destination
+dashboard.mapManager.traceRoute(destinationLat, destinationLng);
+
 	</script>
 <script src="js/jquery-3.2.1.min.js"></script>
 <script src="styles/bootstrap4/popper.js"></script>
@@ -353,7 +357,6 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 <script src="plugins/greensock/animation.gsap.min.js"></script>
 <script src="plugins/greensock/ScrollToPlugin.min.js"></script>
 <script src="plugins/scrollTo/jquery.scrollTo.min.js"></script>
-<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyCIwF204lFZg1y4kPSIhKaHEXMLYxxuMhA"></script>
 <script src="plugins/easing/easing.js"></script>
 <script src="js/contact_custom.js"></script>
 
